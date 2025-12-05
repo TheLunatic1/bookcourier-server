@@ -1,0 +1,33 @@
+{
+  "name": "bookcourier-server",
+  "version": "1.0.0",
+  "description": "Backend API for BookCourier – Express.js + MongoDB + JWT + Stripe",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheLunatic1/bookcourier-server.git"
+  },
+  "keywords": [],
+  "author": "TheLunatic1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheLunatic1/bookcourier-server/issues"
+  },
+  "homepage": "https://github.com/TheLunatic1/bookcourier-server#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
