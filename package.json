@@ -21,6 +21,7 @@
   "homepage": "https://github.com/TheLunatic1/bookcourier-server#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
