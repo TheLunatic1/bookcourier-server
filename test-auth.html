@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BookCourier Auth Test</title>
+  <script>
+    async function register() {
+      const res = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Sarah Connor",
+          email: "sarah@example.com",
+          password: "123456"
+        })
+      });
+      const data = await res.json();
+      console.log("Register:", data);
+      alert("Check console (F12) → Register success!");
+    }
+
+    async function login() {
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "sarah@example.com",
+          password: "123456"
+        })
+      });
+      const data = await res.json();
+      console.log("Login:", data);
+      alert("Check console → Login success + JWT token!");
+    }
+  </script>
+</head>
+<body style="font-family: Arial; text-align: center; padding: 50px;">
+  <h1>BookCourier Auth Test</h1>
+  <button onclick="register()" style="padding: 15px 30px; font-size: 18px; margin: 10px;">Register New User</button>
+  <br><br>
+  <button onclick="login()" style="padding: 15px 30px; font-size: 18px; margin: 10px;">Login</button>
+  <p>Open DevTools (F12) → Console to see JWT token</p>
+</body>
+</html>

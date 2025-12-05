@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/db.js";
-import "colors"; // ← Add this line (after installing colors)
+import "colors";
+import userRoutes from "./src/routes/userRoutes.js";
+import errorHandler from "./src/middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -13,6 +15,8 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.json({ 
@@ -28,3 +32,5 @@ app.get("/api/test", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`.green.bold);
 });
+
+app.use(errorHandler);
