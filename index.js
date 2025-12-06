@@ -43,3 +43,6 @@ app.use("/api/orders", orderRoutes);
 
 import wishlistRoutes from "./src/routes/wishlistRoutes.js";
 app.use("/api/wishlist", wishlistRoutes);
+
+import reviewRoutes from "./src/routes/reviewRoutes.js";
+app.use("/api/reviews", reviewRoutes);
