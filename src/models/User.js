@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     photoURL: {
       type: String,
-      default: "https://i.ibb.co.com/4p0Z4ZP/default-avatar.jpg",
+      default: "https://avatar.iran.liara.run/public",
     },
     role: {
       type: String,

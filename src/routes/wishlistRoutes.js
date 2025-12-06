@@ -4,7 +4,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Get user's wishlist
+// GET user's wishlist
 router.get("/", protect, async (req, res) => {
   try {
     let wishlist = await Wishlist.findOne({ user: req.user._id }).populate("books");
@@ -17,7 +17,7 @@ router.get("/", protect, async (req, res) => {
   }
 });
 
-// Add to wishlist
+// ADD to wishlist
 router.post("/", protect, async (req, res) => {
   const { bookId } = req.body;
   try {
@@ -35,7 +35,7 @@ router.post("/", protect, async (req, res) => {
   }
 });
 
-// Remove from wishlist
+// REMOVE from wishlist
 router.delete("/:bookId", protect, async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({ user: req.user._id });
