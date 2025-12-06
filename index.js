@@ -6,6 +6,7 @@ import "colors";
 import userRoutes from "./src/routes/userRoutes.js";
 import errorHandler from "./src/middleware/errorMiddleware.js";
 import bookRoutes from "./src/routes/bookRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -36,3 +37,4 @@ app.listen(PORT, () => {
 
 app.use(errorHandler);
 app.use("/api/books", bookRoutes);
+app.use("/api/admin", adminRoutes);
