@@ -7,6 +7,9 @@ import userRoutes from "./src/routes/userRoutes.js";
 import errorHandler from "./src/middleware/errorMiddleware.js";
 import bookRoutes from "./src/routes/bookRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
+import wishlistRoutes from "./src/routes/wishlistRoutes.js";
+
+
 
 dotenv.config();
 
@@ -14,6 +17,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 connectDB();
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -38,3 +43,4 @@ app.listen(PORT, () => {
 app.use(errorHandler);
 app.use("/api/books", bookRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/wishlist", wishlistRoutes);

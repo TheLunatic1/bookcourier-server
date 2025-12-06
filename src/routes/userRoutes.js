@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -55,46 +56,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Request to become librarian
-router.post("/request-librarian", async (req, res) => {
+// Request to become librarian - PROTECTED
+router.post("/request-librarian", protect, async (req, res) => {
   try {
-    // We'll protect this with auth middleware later
-    const user = await User.findById(req.body.userId || req.user?.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
+    const user = req.user;
     if (user.role !== "user") {
-      return res.status(400).json({ message: "Already elevated role" });
+      return res.status(400).json({ message: "Already have elevated role" });
     }
-
     user.librarianRequest = true;
     await user.save();
-    res.json({ message: "Request sent to admin!" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Admin: Get all requests
-router.get("/librarian-requests", async (req, res) => {
-  try {
-    const requests = await User.find({ librarianRequest: true, role: "user" });
-    res.json(requests);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Admin: Approve librarian
-router.patch("/make-librarian/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    user.role = "librarian";
-    user.librarianRequest = false;
-    await user.save();
-
-    res.json({ message: "User is now a librarian!", user });
+    res.json({ message: "Librarian request sent!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
