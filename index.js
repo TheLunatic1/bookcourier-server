@@ -46,3 +46,24 @@ app.use("/api/wishlist", wishlistRoutes);
 
 import reviewRoutes from "./src/routes/reviewRoutes.js";
 app.use("/api/reviews", reviewRoutes);
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://bookcourier-client.vercel.app",
+  "https://bookcourier.netlify.app",
+  "https://bookcourier-client.vercel.app/",
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
