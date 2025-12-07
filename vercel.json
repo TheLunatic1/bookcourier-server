@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "source": ".", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/index.js" }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
