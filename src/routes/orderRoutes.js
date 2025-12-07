@@ -7,29 +7,36 @@ const router = express.Router();
 
 // CREATE ORDER AFTER PAYMENT (USER ONLY)
 router.post("/", protect, async (req, res) => {
-  const { bookId, bookTitle, bookCover } = req.body;
+  const { bookId, phone, address } = req.body;
 
   try {
+    const book = await Book.findById(bookId);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    const totalAmount = book.price * 100 + 15000; // ← FIX: price * 100 + delivery (15000 cents)
+
     const order = new Order({
       user: req.user._id,
       book: bookId,
-      bookTitle,
-      bookCover,
-      deliveryAddress: "Payment completed",
-      phone: "From payment",
-      amount: 15000,
-      status: "confirmed",
-      paymentId: "from_stripe",
+      bookTitle: book.title,
+      bookCover: book.coverImage,
+      price: book.price,
+      totalAmount,
+      deliveryAddress: address,
+      phone,
+      status: "pending",
+      paymentStatus: "unpaid",
     });
 
     const savedOrder = await order.save();
     const populatedOrder = await Order.findById(savedOrder._id)
-      .populate("book", "title coverImage");
+      .populate("book", "title coverImage")
+      .populate("user", "name");
 
     res.status(201).json(populatedOrder);
   } catch (err) {
-    console.error("Order save error:", err);
-    res.status(500).json({ message: "Order save failed" });
+    console.error("Order create error:", err);
+    res.status(500).json({ message: "Order failed" });
   }
 });
 

@@ -39,17 +39,18 @@ router.patch("/:id/availability", protect, librarianOnly, async (req, res) => {
   }
 });
 
-// ADD book - LIBRARIAN ONLY
+// ADD BOOK - LIBRARIAN ONLY
 router.post("/", protect, librarianOnly, async (req, res) => {
-  try {
-    const { title, author, coverImage, description, category } = req.body;
+  const { title, author, coverImage, description, category, price } = req.body;
 
+  try {
     const book = new Book({
       title,
       author,
       coverImage,
       description: description || "",
       category: category || "Fiction",
+      price: Number(price), // ← FIX: Convert to number
       addedBy: req.user._id,
       addedByName: req.user.name,
       isAvailable: true,

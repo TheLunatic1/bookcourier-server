@@ -14,6 +14,7 @@ const bookSchema = new mongoose.Schema({
   coverImage: { type: String, required: true },
   description: { type: String, default: "" },
   category: { type: String, default: "Fiction" },
+  price: {type: Number, required: true, min: 0, default: 0},
   addedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   addedByName: { type: String, required: true },
   isAvailable: { type: Boolean, default: true },

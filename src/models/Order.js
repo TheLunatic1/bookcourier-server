@@ -13,19 +13,32 @@ const orderSchema = new mongoose.Schema({
   },
   bookTitle: String,
   bookCover: String,
+  price: {
+    type: Number,
+    required: true,
+  },
   deliveryAddress: String,
   phone: String,
   note: String,
   amount: {
     type: Number,
-    default: 15000, // 150 taka
+    default: 15000, // Delivery charge
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
   },
   status: {
     type: String,
     enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
     default: "pending",
   },
-  paymentId: String, // Stripe payment ID
+  paymentStatus: {
+    type: String,
+    enum: ["unpaid", "paid"],
+    default: "unpaid",
+  },
+  paymentId: String,
 }, { timestamps: true });
 
 export default mongoose.model("Order", orderSchema);
