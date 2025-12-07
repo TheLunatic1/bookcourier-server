@@ -1,8 +1,10 @@
 import express from "express";
 import Book from "../models/Book.js";
-import { protect, librarianOnly } from "../middleware/authMiddleware.js";
+import { protect, librarianOnly, adminOnly } from "../middleware/authMiddleware.js";
+import Order from "../models/Order.js";
 
 const router = express.Router();
+
 
 // GET my books - LIBRARIAN ONLY (must be first!)
 router.get("/my", protect, librarianOnly, async (req, res) => {
@@ -91,23 +93,59 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// DELETE book
-router.delete("/:id", protect, librarianOnly, async (req, res) => {
+
+// PUBLISH/UNPUBLISH BOOK - ADMIN ONLY
+router.patch("/:id/publish", protect, adminOnly, async (req, res) => {
+  const { isAvailable } = req.body;
   try {
-    const result = await Book.deleteOne({
-      _id: req.params.id,
-      addedBy: req.user._id
-    });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "Book not found or not authorized" });
-    }
-
-    res.json({ message: "Book deleted successfully" });
+    const book = await Book.findById(req.params.id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+    book.isAvailable = isAvailable;
+    await book.save();
+    res.json(book);
   } catch (err) {
-    console.error("DELETE book error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+// DELETE BOOK: ADMIN CAN DELETE ANY, LIBRARIAN CAN DELETE THEIR OWN
+router.delete("/:id", protect, async (req, res) => {
+  try {
+    const bookId = req.params.id;
+
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Admin can delete any book
+    if (req.user.role === "admin") {
+      // Admin deletes book + all orders
+      await Order.deleteMany({ book: bookId });
+      await Book.findByIdAndDelete(bookId);
+      return res.json({ message: "Book and all orders deleted (Admin)" });
+    }
+
+    // Librarian can only delete THEIR OWN books
+    if (req.user.role === "librarian") {
+      if (book.addedBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "You can only delete your own books" });
+      }
+      // Librarian deletes book + all orders
+      await Order.deleteMany({ book: bookId });
+      await Book.findByIdAndDelete(bookId);
+      return res.json({ message: "Your book and its orders deleted" });
+    }
+
+    // Users can't delete
+    return res.status(403).json({ message: "Access denied" });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 export default router;
