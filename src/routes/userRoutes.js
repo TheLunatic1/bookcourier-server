@@ -97,4 +97,51 @@ router.patch("/profile", protect, async (req, res) => {
   }
 });
 
+
+
+//GOOGLE LOGIN ROUTE
+router.post("/google-login", async (req, res) => {
+  const { email, name, photoURL } = req.body;
+
+  if (!email || !name) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = new User({
+        name,
+        email,
+        photoURL,
+        role: "user",
+        password: "google-auth-" + Date.now(),
+      });
+      await user.save();
+    } else {
+      // UPDATE PHOTO IF CHANGED
+      if (photoURL && user.photoURL !== photoURL) {
+        user.photoURL = photoURL;
+        await user.save();
+      }
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({
+      token,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      photoURL: user.photoURL,
+      role: user.role,
+    });
+  } catch (err) {
+    console.error("Google login server error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
 export default router;
