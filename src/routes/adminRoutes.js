@@ -55,4 +55,24 @@ router.patch("/reject-librarian/:id", protect, adminOnly, async (req, res) => {
   }
 });
 
+// DOWNGRADE LIBRARIAN TO USER
+router.patch("/downgrade-librarian/:id", protect, adminOnly, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.role !== "librarian") {
+      return res.status(400).json({ message: "User is not a librarian" });
+    }
+
+    user.role = "user";
+    user.librarianRequest = false;
+    await user.save();
+
+    res.json({ message: "Librarian downgraded to user", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 export default router;
