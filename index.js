@@ -67,3 +67,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
+import errorHandler from "./src/middleware/errorMiddleware.js";
+
+app.use(errorHandler);
