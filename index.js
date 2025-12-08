@@ -15,7 +15,20 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || "https://bookcourier-client.vercel.app",
+  origin: (origin, callback) => {
+    const allowed = [
+      "https://bookcourier-client.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:5174"
+    ];
+    
+    // Allow requests with no origin (mobile, Postman)
+    if (!origin || allowed.includes(origin.replace(/\/$/, ""))) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
