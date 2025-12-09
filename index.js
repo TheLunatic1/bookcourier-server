@@ -7,7 +7,7 @@ import cors from "cors";
 import connectDB from "./src/db.js";
 import "colors";
 
-console.log("STRIPE KEY:", process.env.STRIPE_SECRET_KEY ? "LOADED" : "MISSING!!!");
+console.log("STRIPE KEY:" .green, process.env.STRIPE_SECRET_KEY ? "LOADED".green : "MISSING!!!" .red);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,7 +22,7 @@ app.use(cors({
       "http://localhost:5174"
     ];
     
-    // Allow requests with no origin (mobile, Postman)
+    // Bug fix: allow requests with no origin
     if (!origin || allowed.includes(origin.replace(/\/$/, ""))) {
       callback(null, true);
     } else {
@@ -51,7 +51,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`.green.bold);
+  console.log(`SERVER RUNNING...`.green.bold);
 });
 
 import orderRoutes from "./src/routes/orderRoutes.js";
@@ -73,7 +73,6 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       callback(null, true);

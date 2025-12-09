@@ -13,7 +13,7 @@ router.post("/", protect, async (req, res) => {
     const book = await Book.findById(bookId);
     if (!book) return res.status(404).json({ message: "Book not found" });
 
-    const totalAmount = book.price * 100 + 15000; // ← FIX: price * 100 + delivery (15000 cents)
+    const totalAmount = book.price * 100 + 15000;
 
     const order = new Order({
       user: req.user._id,
