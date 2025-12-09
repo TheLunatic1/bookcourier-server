@@ -45,7 +45,7 @@ app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.json({ 
-    message: "BookCourier Server Running!...SERVER RUNNING!...MONGODB CONNECTED!...",
+    message: "BookCourier SERVER RUNNING!...MONGODB CONNECTED!...",
     stripe: process.env.STRIPE_SECRET_KEY ? "Connected" : "Failed"
   });
 });
