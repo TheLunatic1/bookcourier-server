@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Request to become librarian - PROTECTED
+// Request to become librarian
 router.post("/request-librarian", protect, async (req, res) => {
   try {
     const user = req.user;
@@ -71,7 +71,7 @@ router.post("/request-librarian", protect, async (req, res) => {
   }
 });
 
-// UPDATE PROFILE - PROTECTED
+// UPDATE PROFILE
 router.patch("/profile", protect, async (req, res) => {
   const { name, photoURL } = req.body;
 

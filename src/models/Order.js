@@ -22,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   note: String,
   amount: {
     type: Number,
-    default: 15000, // Delivery charge
+    default: 15000,
   },
   totalAmount: {
     type: Number,

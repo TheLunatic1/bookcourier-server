@@ -6,7 +6,7 @@ import Order from "../models/Order.js";
 const router = express.Router();
 
 
-// GET my books - LIBRARIAN ONLY (must be first!)
+// GET my books - LIBRARIAN ONLY
 router.get("/my", protect, librarianOnly, async (req, res) => {
   try {
     const books = await Book.find({ addedBy: req.user._id })
@@ -50,7 +50,7 @@ router.post("/", protect, librarianOnly, async (req, res) => {
       coverImage,
       description: description || "",
       category: category || "Fiction",
-      price: Number(price), // ← FIX: Convert to number
+      price: Number(price),
       addedBy: req.user._id,
       addedByName: req.user.name,
       isAvailable: true,
