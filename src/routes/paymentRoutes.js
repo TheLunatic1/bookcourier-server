@@ -5,7 +5,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// HARD-CODED KEY
+// HARD-CODED KEY HAVE TO BE REPLACED WITH ENV VARIABLE IN PRODUCTION
 const stripe = new Stripe("sk_test_51SbRGvFG9nlrikEDG4TfjtoLtcxYy5NuFQ7Svv1J3G0l2XW1Mw38m8OAV6xh4lLJ8S6ww7phxkGaU2HvkKRrrVbI00PQxI4wvF");
 
 router.post("/create-checkout-session", protect, async (req, res) => {

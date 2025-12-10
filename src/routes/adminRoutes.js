@@ -1,6 +1,9 @@
 import express from "express";
 import User from "../models/User.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const router = express.Router();
 
@@ -76,3 +79,4 @@ router.patch("/downgrade-librarian/:id", protect, adminOnly, async (req, res) =>
 });
 
 export default router;
+
