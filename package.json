@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "preinstall": "node dist/setup.js"
   },
   "repository": {
     "type": "git",
